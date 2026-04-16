@@ -13,21 +13,40 @@ SetUserAction(generator);
 
 PrimaryGeneratorAction::PrimaryGeneratorAction()
 {
-    fParticleGun = new G4ParticleGun(1); // disparar 1 particulas
+    // Declaramos la existencia de disparos de las particulas
+    fParticleGun1 = new G4ParticleGun(1); 
+    fParticleGun2 = new G4ParticleGun(1); 
 
-    G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable(); // llamando a la lista de particulas
-    G4ParticleDefinition* particle = particleTable -> FindParticle("mu-"); // definiendo el proton
+    // Llamamos a la tabla de particulas
+    G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 
-    fParticleGun -> SetParticleDefinition(particle);
-    fParticleGun -> SetParticleMomentumDirection(G4ThreeVector(0., 0., -1.));
-    fParticleGun -> SetParticleEnergy(80. * MeV);
-    fParticleGun -> SetParticlePosition(G4ThreeVector(0., 0., 45. * cm));
+    // Definiendo las particulas
+    G4ParticleDefinition* particle1 = particleTable -> FindParticle("mu-");
+    G4ParticleDefinition* particle2 = particleTable -> FindParticle("opticalphoton"); 
+
+    // Alistando las particulas para el disparo
+    fParticleGun1 -> SetParticleDefinition(particle1);
+    fParticleGun2 -> SetParticleDefinition(particle2);
+
+    // Direccion del momento de las particulas    
+    fParticleGun1 -> SetParticleMomentumDirection(G4ThreeVector(0., 0., -1.));
+    fParticleGun2 -> SetParticleMomentumDirection(G4ThreeVector(0., 0., -1.));
+    
+    // Definiendo la energia de las particulas
+    fParticleGun1 -> SetParticleEnergy(80. * MeV);
+    fParticleGun2 -> SetParticleEnergy(3. * eV);
+
+    // Definiendo el punto de partida
+    fParticleGun1 -> SetParticlePosition(G4ThreeVector(0., 0., 45. * cm));
+    fParticleGun2 -> SetParticlePosition(G4ThreeVector(20. * cm, 25. * cm, 25. *cm));
 }
 
 void PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent) {
-    fParticleGun -> GeneratePrimaryVertex(anEvent);
+    fParticleGun1 -> GeneratePrimaryVertex(anEvent);
+    fParticleGun2 -> GeneratePrimaryVertex(anEvent);
 }
 
 PrimaryGeneratorAction::~PrimaryGeneratorAction() {
-delete fParticleGun;
+delete fParticleGun1;
+delete fParticleGun2;
 }

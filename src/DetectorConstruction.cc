@@ -44,7 +44,7 @@ G4VPhysicalVolume* MyDetectorConstruction::Construct()
     // Ubicaciones
     G4ThreeVector fWorldCenter = G4ThreeVector(0., 0., 0.);
     G4ThreeVector fTankCenter  = G4ThreeVector(0., 0., 0.);
-    G4ThreeVector fiberCenter  = G4ThreeVector(0., 25*cm, 0.);
+    G4ThreeVector fiberCenter  = G4ThreeVector(20. * cm, 25. *cm, 0.);
 
     // Definiendo volumenes solidos
     solidWorld = new G4Box("World", 0.5*WorldSize, 0.5*WorldSize, 0.5*WorldSize);
