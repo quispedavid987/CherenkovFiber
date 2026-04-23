@@ -43,12 +43,16 @@ int main(G4int argc, char** argv)
     UIManager->ApplyCommand("/vis/scene/endOfEventAction accumulate 300");
 
     UIManager->ApplyCommand("/vis/modeling/trajectories/create/drawByParticleID");
-    UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set e- blue");
+    UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set gamma white");
+    UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set e- cyan");
+    UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set e+ magenta");
     UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set mu- red");
     UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set mu+ red");
-
     UIManager->ApplyCommand("/vis/modeling/trajectories/drawByParticleID-0/set opticalphoton green");
-    UIManager->ApplyCommand("/run/beamOn 1");
+
+    UIManager->ApplyCommand("/vis/set/textColour yellow");
+    UIManager->ApplyCommand("/vis/add/text2D 0 0 18 Energía:");
+    //UIManager->ApplyCommand("/run/beamOn 1");
     //
     ui -> SessionStart();
     G4cout << "========== Simulacion completa ===========" << G4endl;

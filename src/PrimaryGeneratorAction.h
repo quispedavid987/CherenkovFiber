@@ -24,6 +24,6 @@ public:
 
 private:
     G4ParticleGun* fParticleGun1;
-    G4ParticleGun* fParticleGun2;
+    //4ParticleGun* fParticleGun2;
 };
 #endif
