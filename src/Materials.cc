@@ -28,6 +28,13 @@ static G4double water1AbsLen[] = {
 static G4double water1PhotonEnergyShort[] = {2.08*eV, 4.20*eV};
 static G4double water1RefIndex[] = {1.33, 1.33};
 
+static G4double linerAbsLen[] = {
+	10*m,  10*m,  10*m,  10*m,  10*m,  10*m,
+	10*m,  10*m,  10*m,  10*m,  10*m,  10*m,
+	10*m,  10*m,  10*m,  10*m,  10*m,  10*m,
+	10*m,  10*m,  10*m,  10*m,  10*m,  10*m,
+	10*m,  10*m,  10*m,  10*m,  10*m,  10*m
+};
 
 // Arrays parala fibra
 // array of photon energies in the red-UV range for scintillation processes
@@ -79,9 +86,11 @@ G4Element* Materials::elC;
 G4Material* Materials::Air;
 G4Material* Materials::Water;
 G4Material* Materials::PMMA;
+G4Material* Materials::HDPE;
 
 G4MaterialPropertiesTable* Materials::WaterPT1;
 G4MaterialPropertiesTable* Materials::pmmaPT;
+G4MaterialPropertiesTable* Materials::linerPT1;
 
 Materials::Materials()
 {
@@ -120,25 +129,35 @@ void Materials::CreateMaterials()
 
 
 	PMMA = new G4Material("PMMA", 1.190 * g/cm3, 3); // Fibra
-	PMMA->AddElement(elC, 5);
-	PMMA->AddElement(elH, 8);
-	PMMA->AddElement(elO, 2);
+	PMMA -> AddElement(elC, 5);
+	PMMA -> AddElement(elH, 8);
+	PMMA -> AddElement(elO, 2);
+
+	HDPE = new G4Material("HDPE", 0.94 * g/cm3, 2); // Tyvek
+	HDPE -> AddElement(elC, 2);
+	HDPE -> AddElement(elH, 4);
+
 
     // Agregando propiedades al agua
     // Define different PropertiesTable for different water "types"
 	WaterPT1 = new G4MaterialPropertiesTable();
 	WaterPT1->AddProperty("RINDEX", water1PhotonEnergyShort, water1RefIndex, 2);
 	WaterPT1->AddProperty("ABSLENGTH", water1PhotonEnergy, water1AbsLen, water1ArrEntries);
-
-    // function to set waterPT from configuration file
 	Water->SetMaterialPropertiesTable(WaterPT1);
 
+	// Agregando propiedades a la fibra
     pmmaPT = new G4MaterialPropertiesTable();
 	pmmaPT->AddProperty("RINDEX", scinPhotonEnergy, pmmaRefIndex, scinArrEntries);
 	pmmaPT->AddProperty("WLSABSLENGTH", scinPhotonEnergy, pmmaAbsLen, scinArrEntries);
 	pmmaPT->AddProperty("WLSCOMPONENT", scinPhotonEnergy, pmmaEmission, scinArrEntries);
 	pmmaPT->AddConstProperty("WLSTIMECONSTANT", 0.5 * ns); // 
 	PMMA->SetMaterialPropertiesTable(pmmaPT);
+
+
+	// Agregando propiedades al Tyvek
+	linerPT1 = new G4MaterialPropertiesTable();
+	linerPT1->AddProperty("ABSLENGTH", water1PhotonEnergy,linerAbsLen, water1ArrEntries);
+	HDPE->SetMaterialPropertiesTable(linerPT1);
 
     G4cout << "Creando Materiales .... OK!" << G4endl;
 

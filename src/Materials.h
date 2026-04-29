@@ -26,10 +26,12 @@ public:
     static G4Material* Air; // Aire
     static G4Material* Water; // Agua
     static G4Material* PMMA; // Fibra
+    static G4Material* HDPE; // Tyvek
 
     // Propiedades
     static G4MaterialPropertiesTable* WaterPT1; // de agua
     static G4MaterialPropertiesTable* pmmaPT; // de fibra
+    static G4MaterialPropertiesTable* linerPT1; // de Tyvek
 
 private:
     void CreateElements();

@@ -21,7 +21,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
     G4ParticleTable* particleTable = G4ParticleTable::GetParticleTable();
 
     // Definiendo las particulas
-    G4ParticleDefinition* particle1 = particleTable -> FindParticle("gamma");
+    G4ParticleDefinition* particle1 = particleTable -> FindParticle("mu-");
     //G4ParticleDefinition* particle2 = particleTable -> FindParticle("opticalphoton"); 
 
     // Alistando las particulas para el disparo
@@ -33,7 +33,7 @@ PrimaryGeneratorAction::PrimaryGeneratorAction()
     //fParticleGun2 -> SetParticleMomentumDirection(G4ThreeVector(0., 0., -1.));
     
     // Definiendo la energia de las particulas
-    fParticleGun1 -> SetParticleEnergy(100. * MeV);
+    fParticleGun1 -> SetParticleEnergy(80. * MeV);
     //fParticleGun2 -> SetParticleEnergy(3. * eV);
 
     // Definiendo el punto de partida
