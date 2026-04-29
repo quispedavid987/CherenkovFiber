@@ -6,6 +6,8 @@
 #include "G4ElementTable.hh" // Tabla de elementos
 #include "G4Material.hh" // Construccion de materiales a partir de elementos
 #include "G4SystemOfUnits.hh" // Sistema de unidades
+#include "G4LogicalSkinSurface.hh"
+#include "G4OpticalSurface.hh"
 
 class Materials
 {
@@ -32,6 +34,10 @@ public:
     static G4MaterialPropertiesTable* WaterPT1; // de agua
     static G4MaterialPropertiesTable* pmmaPT; // de fibra
     static G4MaterialPropertiesTable* linerPT1; // de Tyvek
+    static G4MaterialPropertiesTable* linerOpticalPT; // del modo de reflexion
+
+    // Propiedades opticas
+    static G4OpticalSurface* LinerOptSurf;
 
 private:
     void CreateElements();

@@ -77,6 +77,40 @@ static G4double pmmaEmission[] = {
 	0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00, 0.00
 };
 
+static G4double linerRefIndex[] = {
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0
+};
+
+static G4double linerBackScatter[] = {
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0,
+	0, 0, 0, 0, 0, 0
+};
+
+static G4double scaleLinerRef = 0.94;
+static G4double linerReflectivity[] = {
+	0.9957*scaleLinerRef, 0.9953*scaleLinerRef, 0.9948*scaleLinerRef, 0.9942*scaleLinerRef, 0.9939*scaleLinerRef, 0.9937*scaleLinerRef,
+	0.9937*scaleLinerRef, 0.9940*scaleLinerRef, 0.9945*scaleLinerRef, 0.9954*scaleLinerRef, 0.9964*scaleLinerRef, 0.9975*scaleLinerRef,
+	0.9985*scaleLinerRef, 0.9993*scaleLinerRef, 1.0000*scaleLinerRef, 1.0000*scaleLinerRef, 0.9993*scaleLinerRef, 0.9977*scaleLinerRef,
+	0.9948*scaleLinerRef, 0.9903*scaleLinerRef, 0.9840*scaleLinerRef, 0.9753*scaleLinerRef, 0.9642*scaleLinerRef, 0.9500*scaleLinerRef, 
+	0.9334*scaleLinerRef, 0.9108*scaleLinerRef, 0.8849*scaleLinerRef, 0.8541*scaleLinerRef, 0.8178*scaleLinerRef, 0.7755*scaleLinerRef
+};
+
+// sigmaAlpha is used to model specular reflections from the surface
+static G4double fSigmaAlpha = 0.17; // 0.23 in doi = 10.1364/OE.19.004199
+static G4double specularLobePhotonEnergy[] = {2.08*eV, 3.0*eV, 4.20*eV};
+// fraction of light reflected in a lobe with width characterized by sigmaAlpha
+static G4double specularLobe[] = {0.2, 0.2, 0.2}; // same value in doi = 10.1364/OE.19.004199
+static G4double specularSpike[] = {0, 0, 0};
+
+
+
 static bool isInitialized = 0;
 G4Element* Materials::elH;
 G4Element* Materials::elO;
@@ -91,6 +125,9 @@ G4Material* Materials::HDPE;
 G4MaterialPropertiesTable* Materials::WaterPT1;
 G4MaterialPropertiesTable* Materials::pmmaPT;
 G4MaterialPropertiesTable* Materials::linerPT1;
+G4MaterialPropertiesTable* Materials::linerOpticalPT;
+
+G4OpticalSurface* Materials::LinerOptSurf;
 
 Materials::Materials()
 {
@@ -158,6 +195,21 @@ void Materials::CreateMaterials()
 	linerPT1 = new G4MaterialPropertiesTable();
 	linerPT1->AddProperty("ABSLENGTH", water1PhotonEnergy,linerAbsLen, water1ArrEntries);
 	HDPE->SetMaterialPropertiesTable(linerPT1);
+
+	// Liner optical surface properties
+	linerOpticalPT = new G4MaterialPropertiesTable();
+	linerOpticalPT->AddProperty("SPECULARLOBECONSTANT", specularLobePhotonEnergy, specularLobe, 3);
+	linerOpticalPT->AddProperty("SPECULARSPIKECONSTANT", specularLobePhotonEnergy, specularSpike, 3);
+	linerOpticalPT->AddProperty("REFLECTIVITY", water1PhotonEnergy, linerReflectivity, water1ArrEntries);
+	linerOpticalPT->AddProperty("BACKSCATTERCONSTANT", water1PhotonEnergy, linerBackScatter, water1ArrEntries);
+	linerOpticalPT->AddProperty("RINDEX", water1PhotonEnergy, linerRefIndex, water1ArrEntries);
+
+	LinerOptSurf =  new G4OpticalSurface("WallSurface");
+	LinerOptSurf->SetModel(unified);
+	LinerOptSurf->SetType(dielectric_metal);
+	LinerOptSurf->SetFinish(ground);
+	LinerOptSurf->SetSigmaAlpha(fSigmaAlpha);
+	LinerOptSurf->SetMaterialPropertiesTable(linerOpticalPT);
 
     G4cout << "Creando Materiales .... OK!" << G4endl;
 
