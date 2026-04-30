@@ -23,14 +23,13 @@ int main(G4int argc, char** argv)
     // 
 
     runManager -> Initialize();
-
+/*
     G4UIExecutive *ui = new G4UIExecutive(argc, argv);
 
     G4VisManager *visManager = new G4VisExecutive();
     visManager -> Initialize();
 
     G4UImanager *UIManager = G4UImanager::GetUIpointer();
-
     // vamos poniendo los comandos inciales
     UIManager->ApplyCommand("/vis/open OGL"); // Abre la imagen del detector
     UIManager->ApplyCommand("/vis/viewer/set/viewpointVector 1 1.7 1.2");
@@ -59,6 +58,12 @@ int main(G4int argc, char** argv)
 
     delete ui;
     delete visManager;
+*/
+    G4cout << "========== Simulacion iniciada ===========" << G4endl;
+    int numberOfEvents = 1;
+    runManager -> BeamOn(numberOfEvents);
+
+    G4cout << "========== Simulacion completa ===========" << G4endl;
     delete runManager;
 
 
